@@ -13,10 +13,11 @@ export class Lexer {
     private length: number;
 
     public constructor(input: string) {
-        this.OPERATOR_CHARS = "+-*/";
+        this.OPERATOR_CHARS = "+-*/()";
         this.OPERATOR_TOKENS = [
             TokenType.PLUS, TokenType.MINUS,
-            TokenType.STAR, TokenType.SLASH
+            TokenType.STAR, TokenType.SLASH,
+            TokenType.LPAREN, TokenType.RPAREN
         ];
 
         this.input = input;
