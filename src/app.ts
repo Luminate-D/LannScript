@@ -1,4 +1,4 @@
-import 'source-map-support';
+import 'source-map-support/register';
 
 import { Lexer } from './parser/lexer';
 import { Parser } from './parser/parser';
