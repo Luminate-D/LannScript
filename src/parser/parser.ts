@@ -6,7 +6,6 @@ import { ValueExpression } from '../ast/valueexpression';
 import { PrintStatement } from '../ast/printstatement';
 import { Statement } from '../ast/statement';
 import { UnaryExpression } from '../ast/UnaryExpression';
-import { RuntimeException } from '../errors/runtime';
 import { OperationType } from './operationtype';
 import { Token } from './token';
 import { TokenType } from './tokentype';
@@ -59,7 +58,7 @@ export class Parser {
             return new AssignmentStatement(variable, this.expression());
         }
 
-        throw new RuntimeException('Unknown statement (operator)');
+        throw new SyntaxError('Unknown statement');
     }
 
     private conditionalStatement(): Statement {
@@ -258,7 +257,7 @@ export class Parser {
             return result;
         }
 
-        throw new RuntimeException('Unknown expression');
+        throw new SyntaxError('Unknown expression');
     }
 
     // Parser methods

@@ -1,4 +1,3 @@
-import { RuntimeException } from '../errors/runtime';
 import { Character } from '../util/character';
 import { Token } from './token';
 import { TokenType } from './tokentype';
