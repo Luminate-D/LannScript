@@ -1,3 +1,6 @@
+import { NumberValue } from '../lib/numbervalue';
+import { StringValue } from '../lib/stringvalue';
+import { Value } from '../lib/value';
 import { OperationType } from '../parser/operationtype';
 import { Expression } from './expression';
 
@@ -16,18 +19,32 @@ export class BinaryExpression implements Expression {
         this.expr2 = expr2;
     }
 
-    eval(): number {
-        switch(this.operation) {
-            case OperationType.SUM: return this.expr1.eval() + this.expr2.eval();
-            case OperationType.SUBTRACT: return this.expr1.eval() - this.expr2.eval();
-            case OperationType.MULTIPLY: return this.expr1.eval() * this.expr2.eval();
-            case OperationType.DIVIDE: {
-                let val1 = this.expr1.eval();
-                let val2 = this.expr2.eval();
-                if(val2 == 0) return 0;
+    eval(): Value {
+        let value1 = this.expr1.eval();
+        let value2 = this.expr2.eval();
+        
+        if(value1 instanceof StringValue) {
+            let string1 = value1.getString();
+            let string2 = value2.getString();
 
-                return val1 / val2;
-            } default: return this.expr1.eval() + this.expr2.eval();
+            switch(this.operation) {
+                case OperationType.SUM:
+                default: return new StringValue(string1 + string2);
+            }
+        }
+
+        let res1 = value1.getNumber();
+        let res2 = value2.getNumber();
+        
+        switch(this.operation) {
+            case OperationType.SUM: return new NumberValue(res1 + res2);
+            case OperationType.SUBTRACT: return new NumberValue(res1 - res2);
+            case OperationType.MULTIPLY: return new NumberValue(res1 * res2);
+            case OperationType.DIVIDE: {
+                if(res2 == 0) return new NumberValue(0);
+
+                return new NumberValue(res1 / res2);
+            } default: return new NumberValue(res1 + res2);
         }
     }
 }

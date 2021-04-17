@@ -4,7 +4,7 @@ export class Character {
         return !isNaN(num) && isFinite(num);
     }
 
-    static isHexMatches(char: string): boolean {
-        return '0123456789abcdef'.includes(char.toLowerCase());
+    static isLetter(char: string): boolean {
+        return /[A-Za-zА-Яа-я]+/g.test(char);
     }
 }

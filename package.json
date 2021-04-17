@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "promise-fs": "^2.1.1"
+    "promise-fs": "^2.1.1",
+    "source-map-support": "^0.5.19"
   },
   "devDependencies": {
     "@types/promise-fs": "^2.1.1"

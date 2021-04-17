@@ -1,1 +1,2 @@
-2 + 2 / 2
+if (40 < 50 && 50 > 60) print "true"
+else print "false"

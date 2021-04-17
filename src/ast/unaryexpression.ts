@@ -1,21 +1,24 @@
+import { NumberValue } from '../lib/numbervalue';
+import { Value } from '../lib/value';
+import { OperationType } from '../parser/operationtype';
 import { Expression } from './expression';
 
 export class UnaryExpression implements Expression {
     private expr: Expression;
-    private operation: string;
+    private operation: OperationType;
 
     public constructor(
-        operation: string,
+        operation: OperationType,
         expr: Expression,
     ) {
         this.operation = operation;
         this.expr = expr;
     }
 
-    eval(): number {
+    eval(): Value {
         switch(this.operation) {
-            case '+': return this.expr.eval();
-            case '-': return -this.expr.eval();
+            case OperationType.SUBTRACT: return new NumberValue(-this.expr.eval());
+            case OperationType.SUM:
             default: return this.expr.eval();
         }
     }
