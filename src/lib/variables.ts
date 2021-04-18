@@ -3,10 +3,7 @@ import { Value } from './value';
 
 export class Variables {
     private static ZERO = new NumberValue(0);
-    private static variables: Map<String, Value> = new Map<String, Value>([
-        [ 'PI', new NumberValue(Math.PI) ],
-        [ 'E', new NumberValue(Math.E) ]
-    ]);
+    private static variables: Map<String, Value> = new Map<String, Value>();
 
     private static stack: Map<String, Value>[] = [];
 

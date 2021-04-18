@@ -1,6 +1,3 @@
-void sum(a, b) {
-    return a + b
-}
+import "math"
 
-result = sum(10, 15)
-print(result)
+print(pow(2, 16))

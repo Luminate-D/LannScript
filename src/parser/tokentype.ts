@@ -21,6 +21,7 @@ export enum TokenType {
     KW_FOR, KW_WHILE,
     KW_DO, KW_BREAK, KW_CONTINUE,
     KW_VOID, KW_RETURN,
+    KW_IMPORT,
 
     EOF
 }

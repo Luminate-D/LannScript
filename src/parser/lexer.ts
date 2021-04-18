@@ -86,6 +86,7 @@ export class Lexer {
             case 'continue': return this.addToken(TokenType.KW_CONTINUE);
             case 'void': return this.addToken(TokenType.KW_VOID);
             case 'return': return this.addToken(TokenType.KW_RETURN);
+            case 'import': return this.addToken(TokenType.KW_IMPORT);
             
             default: this.addToken(TokenType.WORD, buffer);
         }
