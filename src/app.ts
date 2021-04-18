@@ -21,11 +21,4 @@ import * as fs from 'promise-fs';
     console.log('-'.repeat(30));
 
     await statement.execute();
-
-    // console.log('-'.repeat(30));
-    // console.log();
-
-    // Variables.entries().forEach(entry => {
-    //     console.log(entry.key + ' | ' + entry.value);
-    // });
 })();
