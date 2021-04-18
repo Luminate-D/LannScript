@@ -1,4 +1,4 @@
-import { MathLib } from '../lib/external/math';
+import { Library } from '../lib/external/library';
 import { Statement } from './statement';
 
 export class ImportStatement implements Statement {
@@ -9,7 +9,12 @@ export class ImportStatement implements Statement {
     }
 
     execute(): void {
-        if(this.name == 'math') return new MathLib().apply();
-        throw new Error(`Library '${this.name}' not found`);
+        try {
+            let lib = require(`../lib/external/${this.name}`);
+            let instance = new (lib[Object.keys(lib)[0]])();
+            instance.apply();
+        } catch {
+            throw new Error(`Library '${this.name}' not found`);
+        }
     }
 }

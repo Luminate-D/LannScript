@@ -1,3 +1,4 @@
+import "std"
 import "math"
 
 print(pow(2, 16))
