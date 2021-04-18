@@ -1,4 +1,5 @@
 import { Statement } from './statement';
+import * as Bluebird from 'bluebird';
 
 export class BlockStatement implements Statement {
     private statements: Statement[];
@@ -11,9 +12,9 @@ export class BlockStatement implements Statement {
         this.statements.push(statement);
     }
 
-    execute(): void {
-        this.statements.forEach(statement => {
-            statement.execute();
+    async execute(): Promise<void> {
+        await Bluebird.each(this.statements, async statement => {
+            await statement.execute();
         });
     }
 }

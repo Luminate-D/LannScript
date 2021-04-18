@@ -12,9 +12,9 @@ export class IfStatement implements Statement {
         this.elseStatement = elseStatement;
     }
 
-    execute(): void {
-        let result = this.expression.eval().getNumber();
-        if(result != 0) this.ifStatement.execute();
-        else if(this.elseStatement != null) this.elseStatement.execute();
+    async execute(): Promise<void> {
+        let result = (await this.expression.eval()).getNumber();
+        if(result != 0) await this.ifStatement.execute();
+        else if(this.elseStatement != null) await this.elseStatement.execute();
     }
 }

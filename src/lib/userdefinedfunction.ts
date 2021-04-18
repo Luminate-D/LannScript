@@ -22,9 +22,9 @@ export class UserDefinedFunction implements Function {
         return this.args[index];
     }
 
-    execute(...args: Value[]): Value {
+    async execute(...args: Value[]): Promise<Value> {
         try {
-            this.body.execute();
+            await this.body.execute();
         } catch (e) {
             let err = e as ReturnStatement;
             return err.getResult();

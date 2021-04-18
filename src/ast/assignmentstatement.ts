@@ -11,8 +11,8 @@ export class AssignmentStatement implements Statement {
         this.expression = expression;
     }
 
-    execute(): void {
-        let result = this.expression.eval();
+    async execute(): Promise<void> {
+        let result = await this.expression.eval();
         Variables.set(this.variable, result);
     }
 }

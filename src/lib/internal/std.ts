@@ -6,7 +6,7 @@ import { StringValue } from "../stringvalue";
 export class STDLib {
     apply() {
         Functions.set('print', <Function> {
-            execute: (...args: Value[]): Value => {
+            execute: async (...args: Value[]): Promise<Value> => {
                 let data = args.map(a => a.getString()).join(' ');
 
                 console.log(data);

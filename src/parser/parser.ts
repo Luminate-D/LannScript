@@ -167,6 +167,13 @@ export class Parser {
     }
 
     private importStatement(): Statement {
+        if(this.match(TokenType.LT)) {
+            let module = this.consume(TokenType.WORD).getText();
+            this.consume(TokenType.GT);
+
+            return new ImportStatement(module);
+        }
+
         let module = this.consume(TokenType.TEXT).getText();
         return new ImportStatement(module);
     }

@@ -19,9 +19,9 @@ export class ConditionalExpression implements Expression {
         this.expr2 = expr2;
     }
 
-    eval(): Value {
-        let value1 = this.expr1.eval();
-        let value2 = this.expr2.eval();
+    async eval(): Promise<Value> {
+        let value1 = await this.expr1.eval();
+        let value2 = await this.expr2.eval();
         
         let number1: number;
         let number2: number;
@@ -29,16 +29,6 @@ export class ConditionalExpression implements Expression {
         if(value1 instanceof StringValue) {
             number1 = new NumberValue(value1.getString() < value2.getString()).getNumber();
             number2 = 0;
-
-            // let string1 = value1.getString();
-            // let string2 = value2.getString();
-
-            // switch(this.operation) {
-            //     case LogicalOperationType.LOWER: return new NumberValue(string1 < string2);
-            //     case LogicalOperationType.HIGHER: return new NumberValue(string1 > string2);
-            //     case LogicalOperationType.EQUAL:
-            //     default: return new NumberValue(string1 == string2);
-            // }
         } else {
             number1 = value1.getNumber();
             number2 = value2.getNumber();

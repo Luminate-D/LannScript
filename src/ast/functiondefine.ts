@@ -15,8 +15,7 @@ export class FunctionDefine implements Statement {
         this.body = body;
     }
 
-    execute(): Value {
+    async execute(): Promise<void> {
         Functions.set(this.name, new UserDefinedFunction(this.args, this.body));
-        return NumberValue.ZERO;
     }
 }

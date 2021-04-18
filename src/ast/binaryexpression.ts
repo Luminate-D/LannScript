@@ -19,9 +19,9 @@ export class BinaryExpression implements Expression {
         this.expr2 = expr2;
     }
 
-    eval(): Value {
-        let value1 = this.expr1.eval();
-        let value2 = this.expr2.eval();
+    async eval(): Promise<Value> {
+        let value1 = await this.expr1.eval();
+        let value2 = await this.expr2.eval();
         
         if(value1 instanceof StringValue) {
             let string1 = value1.getString();

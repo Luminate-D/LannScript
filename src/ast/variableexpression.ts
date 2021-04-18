@@ -9,7 +9,7 @@ export class VariableExpression implements Expression {
         this.name = name;
     }
 
-    eval(): Value {
+    async eval(): Promise<Value> {
         if(!Variables.isExists(this.name)) throw new ReferenceError(`'${this.name}' is not defined`)
         return Variables.get(this.name);
     }

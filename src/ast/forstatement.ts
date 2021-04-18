@@ -21,12 +21,12 @@ export class ForStatement implements Statement {
         this.block = block;
     }
 
-    execute(): void {
+    async execute(): Promise<void> {
         for(this.init.execute();
-            this.termination.eval().getNumber() != 0;
-            this.increment.execute()) {
+            (await this.termination.eval()).getNumber() != 0;
+            await this.increment.execute()) {
             try {
-                this.block.execute();
+                await this.block.execute();
             } catch (e) {
                 if(e instanceof BreakStatement) break;
                 if(e instanceof ContinueStatement) continue;

@@ -3,6 +3,7 @@ import { UserDefinedFunction } from '../lib/userdefinedfunction';
 import { Value } from '../lib/value';
 import { Variables } from '../lib/variables';
 import { Expression } from './expression';
+import * as Bluebird from 'bluebird';
 
 export class FunctionalExpression implements Expression {
     private name: string;
@@ -17,10 +18,10 @@ export class FunctionalExpression implements Expression {
         this.args.push(arg);
     }
 
-    eval(): Value {
+    async eval(): Promise<Value> {
         let values: Value[] = [];
-        this.args.forEach(arg => {
-            values.push(arg.eval());
+        await Bluebird.each(this.args, async arg => {
+            values.push(await arg.eval());
         });
 
         let func = Functions.get(this.name);
@@ -34,12 +35,12 @@ export class FunctionalExpression implements Expression {
                 Variables.set(userFunction.getArgName(i), values[i]);
             }
 
-            let result = userFunction.execute();
+            let result = await userFunction.execute();
             Variables.pop();
 
             return result;
         }
 
-        return func.execute(...values);
+        return await func.execute(...values);
     }
 }

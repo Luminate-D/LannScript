@@ -9,7 +9,7 @@ export class FunctionStatement implements Statement {
         this.expr = expr;
     }
 
-    execute(): Value {
-        return this.expr.eval();
+    async execute(): Promise<void> {
+        await this.expr.eval();
     }
 }

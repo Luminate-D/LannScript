@@ -12,15 +12,15 @@ export class DoWhileStatement implements Statement {
         this.statement = statement;
     }
 
-    execute(): void {
+    async execute(): Promise<void> {
         do {
             try {
-                this.statement.execute();
+                await this.statement.execute();
             } catch (e) {
                 if(e instanceof BreakStatement) break;
                 if(e instanceof ContinueStatement) continue;
                 break;
             }
-        } while(this.condition.eval().getNumber() != 0);
+        } while((await this.condition.eval()).getNumber() != 0);
     }
 }

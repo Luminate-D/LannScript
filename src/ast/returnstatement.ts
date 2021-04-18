@@ -17,8 +17,8 @@ export class ReturnStatement extends Error implements Statement {
         return this.result;
     }
 
-    execute(): void {
-        this.result = this.expression.eval();
+    async execute(): Promise<void> {
+        this.result = await this.expression.eval();
         throw this;
     }
 }

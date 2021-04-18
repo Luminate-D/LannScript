@@ -12,7 +12,7 @@ export class ValueExpression implements Expression {
         
     }
 
-    eval(): Value {
+    async eval(): Promise<Value> {
         return this.value;
     }
 }

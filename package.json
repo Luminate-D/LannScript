@@ -1,9 +1,11 @@
 {
   "dependencies": {
+    "bluebird": "^3.7.2",
     "promise-fs": "^2.1.1",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.33",
     "@types/promise-fs": "^2.1.1"
   }
 }

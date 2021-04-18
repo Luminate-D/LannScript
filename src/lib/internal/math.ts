@@ -10,7 +10,8 @@ export class MathLib {
         Variables.set('E', new NumberValue(Math.E));
 
         Functions.set('sin', <Function> {
-            execute: (num: NumberValue): Value => {
+            execute: async (num: NumberValue): Promise<Value> => {
+                console.log(num);
                 if(!num) throw new ReferenceError('sin: First argument is not provided');
                 return new NumberValue(
                     Math.sin(num.getNumber())
@@ -19,7 +20,7 @@ export class MathLib {
         });
 
         Functions.set('cos', <Function> {
-            execute: (num: NumberValue): Value => {
+            execute: async (num: NumberValue): Promise<Value> => {
                 if(!num) throw new ReferenceError('cos: First argument is not provided');
                 return new NumberValue(
                     Math.cos(num.getNumber())
@@ -28,7 +29,7 @@ export class MathLib {
         });
 
         Functions.set('tg', <Function> {
-            execute: (num: NumberValue): Value => {
+            execute: async (num: NumberValue): Promise<Value> => {
                 if(!num) throw new ReferenceError('tg: First argument is not provided');
                 return new NumberValue(
                     Math.tan(num.getNumber())
@@ -37,7 +38,7 @@ export class MathLib {
         });
 
         Functions.set('ctg', <Function> {
-            execute: (num: NumberValue): Value => {
+            execute: async (num: NumberValue): Promise<Value> => {
                 if(!num) throw new ReferenceError('ctg: First argument is not provided');
                 return new NumberValue(
                     1 / Math.tan(num.getNumber())
@@ -46,7 +47,7 @@ export class MathLib {
         });
 
         Functions.set('pow', <Function> {
-            execute: (num: NumberValue, num2: NumberValue): Value => {
+            execute: async (num: NumberValue, num2: NumberValue): Promise<Value> => {
                 if(!num) throw new ReferenceError('pow: First argument is not provided');
                 if(!num2) throw new ReferenceError('pow: Second argument is not provided');
                 

@@ -8,7 +8,7 @@ export class PrintStatement implements Statement {
         this.expression = expression;
     }
 
-    execute(): void {
-        console.log('[Inner Console]:', this.expression.eval().getString());
+    async execute(): Promise<void> {
+        console.log('[Inner Console]:', (await this.expression.eval()).getString());
     }
 }

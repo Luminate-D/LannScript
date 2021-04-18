@@ -1,3 +1,3 @@
 export interface Statement {
-    execute(): void;
+    execute(): Promise<void>;
 }

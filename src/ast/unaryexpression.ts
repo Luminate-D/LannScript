@@ -15,7 +15,7 @@ export class UnaryExpression implements Expression {
         this.expr = expr;
     }
 
-    eval(): Value {
+    async eval(): Promise<Value> {
         switch(this.operation) {
             case OperationType.SUBTRACT: return new NumberValue(-this.expr.eval());
             case OperationType.SUM:
