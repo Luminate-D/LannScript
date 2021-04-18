@@ -1,60 +1,56 @@
-import { Functions } from "../functions";
 import { NumberValue } from "../numbervalue";
-import { Variables } from "../variables";
 import { Function } from "../function";
 import { Value } from "../value";
+import { Arg1, Arg2 } from "./library";
 
-export class MathLib {
-    apply() {
-        Variables.set('PI', new NumberValue(Math.PI));
-        Variables.set('E', new NumberValue(Math.E));
+export async function apply(addFunction: Arg1, addVariable: Arg2) {
+    addVariable('PI', new NumberValue(Math.PI));
+    addVariable('E', new NumberValue(Math.E));
 
-        Functions.set('sin', <Function> {
-            execute: async (num: NumberValue): Promise<Value> => {
-                console.log(num);
-                if(!num) throw new ReferenceError('sin: First argument is not provided');
-                return new NumberValue(
-                    Math.sin(num.getNumber())
-                );
-            }
-        });
+    addFunction('sin', <Function> {
+        execute: async (num: NumberValue): Promise<Value> => {
+            if(!num) throw new ReferenceError('sin: First argument is not provided');
+            return new NumberValue(
+                Math.sin(num.getNumber())
+            );
+        }
+    });
 
-        Functions.set('cos', <Function> {
-            execute: async (num: NumberValue): Promise<Value> => {
-                if(!num) throw new ReferenceError('cos: First argument is not provided');
-                return new NumberValue(
-                    Math.cos(num.getNumber())
-                );
-            }
-        });
+    addFunction('cos', <Function> {
+        execute: async (num: NumberValue): Promise<Value> => {
+            if(!num) throw new ReferenceError('cos: First argument is not provided');
+            return new NumberValue(
+                Math.cos(num.getNumber())
+            );
+        }
+    });
 
-        Functions.set('tg', <Function> {
-            execute: async (num: NumberValue): Promise<Value> => {
-                if(!num) throw new ReferenceError('tg: First argument is not provided');
-                return new NumberValue(
-                    Math.tan(num.getNumber())
-                );
-            }
-        });
+    addFunction('tg', <Function> {
+        execute: async (num: NumberValue): Promise<Value> => {
+            if(!num) throw new ReferenceError('tg: First argument is not provided');
+            return new NumberValue(
+                Math.tan(num.getNumber())
+            );
+        }
+    });
 
-        Functions.set('ctg', <Function> {
-            execute: async (num: NumberValue): Promise<Value> => {
-                if(!num) throw new ReferenceError('ctg: First argument is not provided');
-                return new NumberValue(
-                    1 / Math.tan(num.getNumber())
-                );
-            }
-        });
+    addFunction('ctg', <Function> {
+        execute: async (num: NumberValue): Promise<Value> => {
+            if(!num) throw new ReferenceError('ctg: First argument is not provided');
+            return new NumberValue(
+                1 / Math.tan(num.getNumber())
+            );
+        }
+    });
 
-        Functions.set('pow', <Function> {
-            execute: async (num: NumberValue, num2: NumberValue): Promise<Value> => {
-                if(!num) throw new ReferenceError('pow: First argument is not provided');
-                if(!num2) throw new ReferenceError('pow: Second argument is not provided');
-                
-                return new NumberValue(
-                    Math.pow(num.getNumber(), num2.getNumber())
-                );
-            }
-        });
-    }
+    addFunction('pow', <Function> {
+        execute: async (num: NumberValue, num2: NumberValue): Promise<Value> => {
+            if(!num) throw new ReferenceError('pow: First argument is not provided');
+            if(!num2) throw new ReferenceError('pow: Second argument is not provided');
+            
+            return new NumberValue(
+                Math.pow(num.getNumber(), num2.getNumber())
+            );
+        }
+    });
 }

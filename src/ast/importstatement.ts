@@ -1,3 +1,7 @@
+import { Function } from '../lib/function';
+import { Functions } from '../lib/functions';
+import { Value } from '../lib/value';
+import { Variables } from '../lib/variables';
 import { Statement } from './statement';
 
 export class ImportStatement implements Statement {
@@ -10,9 +14,11 @@ export class ImportStatement implements Statement {
     async execute(): Promise<void> {
         try {
             let lib = require(`../lib/internal/${this.name}`);
-
-            let instance = new (lib[Object.keys(lib)[0]])();
-            instance.apply();
+            await lib.apply((name: string, fn: Function) => {
+                Functions.set(name, fn);
+            }, (name: string, value: Value) => {
+                Variables.set(name, value);
+            });
         } catch (e) {
             throw new Error(`Library '${this.name}' not found`);
         }
