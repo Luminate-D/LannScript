@@ -13,7 +13,7 @@ export class Lexer {
     private length: number;
 
     public constructor(input: string) {
-        this.OPERATOR_CHARS = "+-*/()=<>!&|";
+        this.OPERATOR_CHARS = "+-*/()=<>!&|{};,";
 
         this.OPERATORS = new Map();
         this.OPERATORS.set('+', TokenType.PLUS);
@@ -22,9 +22,13 @@ export class Lexer {
         this.OPERATORS.set('/', TokenType.SLASH);
         this.OPERATORS.set('(', TokenType.LPAREN);
         this.OPERATORS.set(')', TokenType.RPAREN);
+        this.OPERATORS.set('{', TokenType.LBRACE);
+        this.OPERATORS.set('}', TokenType.RBRACE);
         this.OPERATORS.set('=', TokenType.ASSIGN);
         this.OPERATORS.set('<', TokenType.LT);
         this.OPERATORS.set('>', TokenType.GT);
+        this.OPERATORS.set(';', TokenType.SEMICOLON);
+        this.OPERATORS.set(',', TokenType.COMMA);
 
         this.OPERATORS.set('!', TokenType.EXCL);
         this.OPERATORS.set('&', TokenType.AMP);
@@ -73,12 +77,15 @@ export class Lexer {
         }
 
         switch(buffer) {
-            case 'print': return this.addToken(TokenType.KW_PRINT);
-            case 'if': {
-                return this.addToken(TokenType.KW_IF);
-            }
-
+            case 'if': return this.addToken(TokenType.KW_IF);
             case 'else': return this.addToken(TokenType.KW_ELSE);
+            case 'while': return this.addToken(TokenType.KW_WHILE);
+            case 'for': return this.addToken(TokenType.KW_FOR);
+            case 'do': return this.addToken(TokenType.KW_DO);
+            case 'break': return this.addToken(TokenType.KW_BREAK);
+            case 'continue': return this.addToken(TokenType.KW_CONTINUE);
+            case 'void': return this.addToken(TokenType.KW_VOID);
+            case 'return': return this.addToken(TokenType.KW_RETURN);
             
             default: this.addToken(TokenType.WORD, buffer);
         }

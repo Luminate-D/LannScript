@@ -14,9 +14,13 @@ export enum TokenType {
     AMP, AMPAMP,
 
     LPAREN, RPAREN,
+    LBRACE, RBRACE,
+    SEMICOLON, COMMA,
 
-    KW_PRINT,
     KW_IF, KW_ELSE,
+    KW_FOR, KW_WHILE,
+    KW_DO, KW_BREAK, KW_CONTINUE,
+    KW_VOID, KW_RETURN,
 
     EOF
 }

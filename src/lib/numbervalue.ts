@@ -1,6 +1,7 @@
 import { Value } from './value';
 
 export class NumberValue implements Value {
+    public static ZERO: NumberValue = new NumberValue(0);
     private value: number;
 
     public constructor(value: (number | boolean)) {

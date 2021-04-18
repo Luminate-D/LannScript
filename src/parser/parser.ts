@@ -12,6 +12,15 @@ import { TokenType } from './tokentype';
 import { ConditionalExpression } from '../ast/conditionalexpression';
 import { LogicalOperationType } from './logicaloperationtype';
 import { IfStatement } from '../ast/ifstatement';
+import { BlockStatement } from '../ast/blockstatement';
+import { WhileStatement } from '../ast/whilestatement';
+import { ForStatement } from '../ast/forstatement';
+import { BreakStatement } from '../ast/breakstatement';
+import { ContinueStatement } from '../ast/continuestatement';
+import { FunctionalExpression } from '../ast/functionalexpression';
+import { FunctionStatement } from '../ast/functionstatement';
+import { FunctionDefine } from '../ast/functiondefine';
+import { ReturnStatement } from '../ast/returnstatement';
 
 export class Parser {
     private EOF = new Token(TokenType.EOF);
@@ -26,24 +35,47 @@ export class Parser {
         this.pos = 0;
     }
 
-    parse(): Statement[] {
-        let result: Statement[] = [];
+    parse(): Statement {
+        let result = new BlockStatement();
         
         while(!this.match(TokenType.EOF)) {
-            result.push(this.statement());
+            result.add(this.statement());
         }
 
         return result;
     }
 
     // Statement parser
-    private statement(): Statement {
-        if(this.match(TokenType.KW_PRINT)) {
-            return new PrintStatement(this.expression());
+    private block(): Statement {
+        let block = new BlockStatement();
+
+        this.consume(TokenType.LBRACE);
+        while(!this.match(TokenType.RBRACE)) {
+            block.add(this.statement());
         }
 
-        if(this.match(TokenType.KW_IF)) {
-            return this.conditionalStatement();
+        return block;
+    }
+
+    private statementOrBlock(): Statement {
+        if(this.get(0).getType() == TokenType.LBRACE) return this.block();
+        else return this.statement();
+    }
+
+    private statement(): Statement {
+        // if(this.match(TokenType.KW_PRINT)) return new PrintStatement(this.expression());
+        if(this.match(TokenType.KW_IF)) return this.conditionalStatement();
+        if(this.match(TokenType.KW_DO)) return this.doWhileStatement();
+        if(this.match(TokenType.KW_WHILE)) return this.whileStatement();
+        if(this.match(TokenType.KW_FOR)) return this.forStatement();
+        if(this.match(TokenType.KW_BREAK)) return new BreakStatement();
+        if(this.match(TokenType.KW_CONTINUE)) return new ContinueStatement();
+        if(this.match(TokenType.KW_VOID)) return this.functionDefine();
+        if(this.match(TokenType.KW_RETURN)) return new ReturnStatement(this.expression());
+
+        if(this.get(0).getType() == TokenType.WORD
+            && this.get(1).getType() == TokenType.LPAREN) {
+            return new FunctionStatement(this._function());
         }
 
         return this.assignmentStatement();
@@ -63,14 +95,73 @@ export class Parser {
 
     private conditionalStatement(): Statement {
         let condition = this.expression();
-        let ifStatement = this.statement();
+        let ifStatement = this.statementOrBlock();
 
         let elseStatement: (Statement | null);
         if(this.match(TokenType.KW_ELSE)) {
-            elseStatement = this.statement();
+            elseStatement = this.statementOrBlock();
         } else elseStatement = null;
 
         return new IfStatement(condition, ifStatement, elseStatement);
+    }
+
+    private whileStatement(): Statement {
+        this.consume(TokenType.LPAREN);
+        let condition = this.expression();
+        this.consume(TokenType.RPAREN);
+        let statement = this.statementOrBlock();
+
+        return new WhileStatement(condition, statement);
+    }
+
+    private doWhileStatement(): Statement {
+        let statement = this.statementOrBlock();
+        this.consume(TokenType.KW_WHILE);
+        this.consume(TokenType.LPAREN);
+        let condition = this.expression();
+        this.consume(TokenType.RPAREN);
+
+        return new WhileStatement(condition, statement);
+    }
+
+    private forStatement(): Statement {
+        this.consume(TokenType.LPAREN);
+        let init = this.assignmentStatement();
+        this.consume(TokenType.SEMICOLON);
+        let termination = this.expression();
+        this.consume(TokenType.SEMICOLON);
+        let increment = this.assignmentStatement();
+        this.consume(TokenType.RPAREN);
+        let block = this.statementOrBlock();
+
+        return new ForStatement(init, termination, increment, block);
+    }
+
+    private functionDefine(): FunctionDefine {
+        let name = this.consume(TokenType.WORD).getText();
+        let args: string[] = [];
+
+        this.consume(TokenType.LPAREN);
+        while(!this.match(TokenType.RPAREN)) {
+            args.push(this.consume(TokenType.WORD).getText());
+            this.match(TokenType.COMMA);
+        }
+
+        let body = this.statementOrBlock();
+        return new FunctionDefine(name, args, body);
+    }
+
+    private _function(): FunctionalExpression {
+        let name = this.consume(TokenType.WORD).getText();
+
+        this.consume(TokenType.LPAREN);
+        let _function = new FunctionalExpression(name);
+        while(!this.match(TokenType.RPAREN)) {
+            _function.addArgument(this.expression());
+            this.match(TokenType.COMMA);
+        }
+
+        return _function;
     }
 
     // Expression parser
@@ -238,6 +329,11 @@ export class Parser {
             );
         }
 
+        if(this.get(0).getType() == TokenType.WORD
+            && this.get(1).getType() == TokenType.LPAREN) {
+            return this._function();
+        }
+        
         if(this.match(TokenType.WORD)) {
             return new VariableExpression(
                 current.getText()

@@ -12,12 +12,10 @@ import * as fs from 'promise-fs';
 
     let contents = await fs.readFile('test/script.lsc', { encoding: 'utf8' });
     let tokens = new Lexer(contents).tokenize();
-    let statements = new Parser(tokens).parse();
+    let statement = new Parser(tokens).parse();
 
-    //console.log(statements);
-    statements.forEach(statement => {
-        statement.execute();
-    });
+    console.log(statement);
+    statement.execute();
 
     // console.log('-'.repeat(30));
     // console.log();

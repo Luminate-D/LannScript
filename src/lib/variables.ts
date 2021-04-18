@@ -8,6 +8,16 @@ export class Variables {
         [ 'E', new NumberValue(Math.E) ]
     ]);
 
+    private static stack: Map<String, Value>[] = [];
+
+    public static push() {
+        this.stack.push(new Map(this.variables));
+    }
+
+    public static pop() {
+        this.variables = this.stack.pop() as Map<String, Value>;
+    }
+
     public static isExists(key: string): boolean {
         return Variables.variables.has(key);
     }
