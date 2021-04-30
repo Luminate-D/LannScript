@@ -29,6 +29,7 @@ export class Lexer {
         this.OPERATORS.set('>', TokenType.GT);
         this.OPERATORS.set(';', TokenType.SEMICOLON);
         this.OPERATORS.set(',', TokenType.COMMA);
+        this.OPERATORS.set('**', TokenType.EXP);
 
         this.OPERATORS.set('!', TokenType.EXCL);
         this.OPERATORS.set('&', TokenType.AMP);

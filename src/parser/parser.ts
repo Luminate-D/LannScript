@@ -171,11 +171,11 @@ export class Parser {
             let module = this.consume(TokenType.WORD).getText();
             this.consume(TokenType.GT);
 
-            return new ImportStatement(module);
+            return new ImportStatement(module, true);
         }
 
         let module = this.consume(TokenType.TEXT).getText();
-        return new ImportStatement(module);
+        return new ImportStatement(module, false);
     }
 
     // Expression parser
@@ -236,37 +236,54 @@ export class Parser {
     }
 
     private conditional(): Expression {
-        let result = this.additive();
+        let result = this.exponentive();
 
         while(true) {
             if(this.match(TokenType.LT)) {
                 result = new ConditionalExpression(
-                    LogicalOperationType.LT, result, this.additive()
+                    LogicalOperationType.LT, result, this.exponentive()
                 );
                 continue;
             }
 
             if(this.match(TokenType.LTEQUAL)) {
                 result = new ConditionalExpression(
-                    LogicalOperationType.LTEQ, result, this.additive()
+                    LogicalOperationType.LTEQ, result, this.exponentive()
                 );
                 continue;
             }
 
             if(this.match(TokenType.GT)) {
                 result = new ConditionalExpression(
-                    LogicalOperationType.GT, result, this.additive()
+                    LogicalOperationType.GT, result, this.exponentive()
                 );
                 continue;
             }
 
             if(this.match(TokenType.GTEQUAL)) {
                 result = new ConditionalExpression(
-                    LogicalOperationType.GTEQ, result, this.additive()
+                    LogicalOperationType.GTEQ, result, this.exponentive()
                 );
                 continue;
             }
             
+            break;
+        }
+
+        return result;
+    }
+
+    private exponentive(): Expression {
+        let result = this.additive();
+
+        while(true) {
+            if(this.match(TokenType.EXP)) {
+                result = new BinaryExpression(
+                    OperationType.EXP, result, this.additive()
+                );
+                continue;
+            }
+
             break;
         }
 

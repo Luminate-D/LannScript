@@ -4,6 +4,7 @@ export enum TokenType {
 
     PLUS, MINUS,
     STAR, SLASH,
+    EXP,
 
     ASSIGN, EQUAL, NOT_EQUAL,
     LT, GT,

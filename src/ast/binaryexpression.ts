@@ -40,6 +40,7 @@ export class BinaryExpression implements Expression {
             case OperationType.SUM: return new NumberValue(res1 + res2);
             case OperationType.SUBTRACT: return new NumberValue(res1 - res2);
             case OperationType.MULTIPLY: return new NumberValue(res1 * res2);
+            case OperationType.EXP: return new NumberValue(res1 ** res2);
             case OperationType.DIVIDE: {
                 if(res2 == 0) return new NumberValue(0);
 
