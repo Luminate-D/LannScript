@@ -65,7 +65,6 @@ export class Parser {
     }
 
     private statement(): Statement {
-        // if(this.match(TokenType.KW_PRINT)) return new PrintStatement(this.expression());
         if(this.match(TokenType.KW_IF)) return this.conditionalStatement();
         if(this.match(TokenType.KW_DO)) return this.doWhileStatement();
         if(this.match(TokenType.KW_WHILE)) return this.whileStatement();
@@ -75,11 +74,10 @@ export class Parser {
         if(this.match(TokenType.KW_VOID)) return this.functionDefine();
         if(this.match(TokenType.KW_RETURN)) return new ReturnStatement(this.expression());
         if(this.match(TokenType.KW_IMPORT)) return this.importStatement();
-        if(this.get(0).getType() == TokenType.KW_LET) return this.variableDefineStatement();
+        if(this.lookMatch(0, TokenType.KW_LET)) return this.variableDefineStatement();
 
-        if(this.get(0).getType() == TokenType.WORD
-            && this.get(1).getType() == TokenType.LPAREN) {
-            return new FunctionStatement(this._function());
+        if(this.lookMatch(0, TokenType.WORD)) {
+            if(this.lookMatch(1, TokenType.LPAREN)) return new FunctionStatement(this._function());
         }
 
         return this.assignmentStatement();
@@ -410,6 +408,10 @@ export class Parser {
 
         this.pos++;
         return current;
+    }
+
+    private lookMatch(relativePosition: number, type: TokenType) {
+        return this.get(relativePosition).getType() == type;
     }
 
     private match(type: TokenType): boolean {
