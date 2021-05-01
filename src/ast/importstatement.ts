@@ -28,7 +28,7 @@ export class ImportStatement implements Statement {
             } else {
                 let content = await fs.readFile(this.name, { encoding: 'utf8' });
                 let tokens = new Lexer(content).tokenize();
-                let statement = new Parser(tokens).parse();
+                let statement = new Parser(tokens, this.name).parse();
 
                 await statement.execute();
             }

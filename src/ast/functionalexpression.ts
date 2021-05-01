@@ -4,14 +4,17 @@ import { Value } from '../lib/value';
 import { Variables } from '../lib/variables';
 import { Expression } from './expression';
 import * as Bluebird from 'bluebird';
+import { Stack, StackValue } from '../lib/stack';
 
 export class FunctionalExpression implements Expression {
     private name: string;
     private args: Expression[];
+    private path: string;
 
-    public constructor(name: string, args: Expression[] = []) {
+    public constructor(name: string, path: string, args: Expression[] = []) {
         this.name = name;
         this.args = args;
+        this.path = path;
     }
 
     addArgument(arg: Expression) {
@@ -19,6 +22,10 @@ export class FunctionalExpression implements Expression {
     }
 
     async eval(): Promise<Value> {
+        Stack.push(
+            new StackValue(this.name, this.path)
+        );
+
         let values: Value[] = [];
         await Bluebird.each(this.args, async arg => {
             values.push(await arg.eval());
@@ -38,9 +45,13 @@ export class FunctionalExpression implements Expression {
             let result = await userFunction.execute();
             Variables.pop();
 
+            Stack.pop();
             return result;
         }
 
-        return await func.execute(...values);
+        let result = await func.execute(...values);
+
+        Stack.pop();
+        return result;
     }
 }

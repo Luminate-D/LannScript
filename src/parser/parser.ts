@@ -30,11 +30,13 @@ export class Parser {
     private tokens: Token[];
     private pos: number;
     private size: number;
+    private path: string;
 
-    public constructor(tokens: Token[]) {
+    public constructor(tokens: Token[], filePath: string) {
         this.tokens = tokens;
         this.size = tokens.length;
         this.pos = 0;
+        this.path = filePath;
     }
 
     parse(): Statement {
@@ -171,7 +173,7 @@ export class Parser {
         let name = this.consume(TokenType.WORD).getText();
 
         this.consume(TokenType.LPAREN);
-        let _function = new FunctionalExpression(name);
+        let _function = new FunctionalExpression(name, this.path);
         while(!this.match(TokenType.RPAREN)) {
             _function.addArgument(this.expression());
             this.match(TokenType.COMMA);

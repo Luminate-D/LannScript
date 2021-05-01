@@ -1,0 +1,11 @@
+import <std>
+
+void sosi(a, b) {
+    return a + b * c
+}
+
+void cursed(a) {
+    return sosi(a, 10)
+}
+
+print(cursed(10))

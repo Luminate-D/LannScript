@@ -26,8 +26,12 @@ export class UserDefinedFunction implements Function {
         try {
             await this.body.execute();
         } catch (e) {
-            let err = e as ReturnStatement;
-            return err.getResult();
+            if(e instanceof ReturnStatement) {
+                let err = e as ReturnStatement;
+                return err.getResult();
+            }
+
+            throw e;
         }
         
         return NumberValue.ZERO;
