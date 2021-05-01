@@ -2,7 +2,7 @@ import { Variables } from '../lib/variables';
 import { Expression } from './expression';
 import { Statement } from './statement';
 
-export class AssignmentStatement implements Statement {
+export class VariableDefineStatement implements Statement {
     private variable: string;
     private expression: Expression;
 
@@ -13,8 +13,6 @@ export class AssignmentStatement implements Statement {
 
     async execute(): Promise<void> {
         let result = await this.expression.eval();
-
-        if(!Variables.isExists(this.variable)) throw new Error('Assign to undefined variable "' + this.variable + '"');
         Variables.set(this.variable, result);
     }
 }

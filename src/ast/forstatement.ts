@@ -22,7 +22,7 @@ export class ForStatement implements Statement {
     }
 
     async execute(): Promise<void> {
-        for(this.init.execute();
+        for(await this.init.execute();
             (await this.termination.eval()).getNumber() != 0;
             await this.increment.execute()) {
             try {

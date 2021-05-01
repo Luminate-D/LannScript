@@ -22,7 +22,7 @@ export class ConditionalExpression implements Expression {
     async eval(): Promise<Value> {
         let value1 = await this.expr1.eval();
         let value2 = await this.expr2.eval();
-        
+
         let number1: number;
         let number2: number;
 

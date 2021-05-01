@@ -1,3 +1,11 @@
 import <std>
 
-print(2 ** (2 + 2 * 2))
+for(let i = 0; i < 10; i = i + 1) {
+    print(i)
+}
+
+let text = "suck my dick"
+print(text)
+
+text = 10
+print(text)

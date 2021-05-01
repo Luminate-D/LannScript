@@ -22,6 +22,7 @@ import { FunctionStatement } from '../ast/functionstatement';
 import { FunctionDefine } from '../ast/functiondefine';
 import { ReturnStatement } from '../ast/returnstatement';
 import { ImportStatement } from '../ast/importstatement';
+import { VariableDefineStatement } from '../ast/variabledefinestatement';
 
 export class Parser {
     private EOF = new Token(TokenType.EOF);
@@ -74,6 +75,7 @@ export class Parser {
         if(this.match(TokenType.KW_VOID)) return this.functionDefine();
         if(this.match(TokenType.KW_RETURN)) return new ReturnStatement(this.expression());
         if(this.match(TokenType.KW_IMPORT)) return this.importStatement();
+        if(this.get(0).getType() == TokenType.KW_LET) return this.variableDefineStatement();
 
         if(this.get(0).getType() == TokenType.WORD
             && this.get(1).getType() == TokenType.LPAREN) {
@@ -81,6 +83,20 @@ export class Parser {
         }
 
         return this.assignmentStatement();
+    }
+
+    private variableDefineStatement(): Statement {
+        this.consume(TokenType.KW_LET);
+        
+        let current = this.get(0);
+        if(this.match(TokenType.WORD) && this.get(0).getType() == TokenType.ASSIGN) {
+            let variable = current.getText();
+            this.consume(TokenType.ASSIGN);
+
+            return new VariableDefineStatement(variable, this.expression());
+        }
+
+        throw new Error('Invalid variable define statement');
     }
 
     private assignmentStatement(): Statement {
@@ -92,7 +108,7 @@ export class Parser {
             return new AssignmentStatement(variable, this.expression());
         }
 
-        throw new SyntaxError('Unknown statement');
+        throw new SyntaxError('Invalid assignment statement');
     }
 
     private conditionalStatement(): Statement {
@@ -128,7 +144,7 @@ export class Parser {
 
     private forStatement(): Statement {
         this.consume(TokenType.LPAREN);
-        let init = this.assignmentStatement();
+        let init = this.variableDefineStatement();
         this.consume(TokenType.SEMICOLON);
         let termination = this.expression();
         this.consume(TokenType.SEMICOLON);

@@ -5,6 +5,7 @@ import { TokenType } from './tokentype';
 export class Lexer {
     private OPERATOR_CHARS: string;
     private OPERATORS: Map<String, TokenType>;
+    private KEYWORDS: Map<String, TokenType>;
 
     private input: string;
     private tokens: Token[];
@@ -43,6 +44,18 @@ export class Lexer {
         this.OPERATORS.set('&&', TokenType.AMPAMP);
         this.OPERATORS.set('||', TokenType.BARBAR);
         
+        this.KEYWORDS = new Map();
+        this.KEYWORDS.set('import', TokenType.KW_IMPORT);
+        this.KEYWORDS.set('if', TokenType.KW_IF);
+        this.KEYWORDS.set('else', TokenType.KW_ELSE);
+        this.KEYWORDS.set('while', TokenType.KW_WHILE);
+        this.KEYWORDS.set('for', TokenType.KW_FOR);
+        this.KEYWORDS.set('do', TokenType.KW_DO);
+        this.KEYWORDS.set('break', TokenType.KW_BREAK);
+        this.KEYWORDS.set('continue', TokenType.KW_CONTINUE);
+        this.KEYWORDS.set('void', TokenType.KW_VOID);
+        this.KEYWORDS.set('return', TokenType.KW_RETURN);
+        this.KEYWORDS.set('let', TokenType.KW_LET);
 
         this.input = input;
         this.tokens = [];
@@ -77,20 +90,8 @@ export class Lexer {
             current = this.next();
         }
 
-        switch(buffer) {
-            case 'if': return this.addToken(TokenType.KW_IF);
-            case 'else': return this.addToken(TokenType.KW_ELSE);
-            case 'while': return this.addToken(TokenType.KW_WHILE);
-            case 'for': return this.addToken(TokenType.KW_FOR);
-            case 'do': return this.addToken(TokenType.KW_DO);
-            case 'break': return this.addToken(TokenType.KW_BREAK);
-            case 'continue': return this.addToken(TokenType.KW_CONTINUE);
-            case 'void': return this.addToken(TokenType.KW_VOID);
-            case 'return': return this.addToken(TokenType.KW_RETURN);
-            case 'import': return this.addToken(TokenType.KW_IMPORT);
-            
-            default: this.addToken(TokenType.WORD, buffer);
-        }
+        if(this.KEYWORDS.has(buffer)) return this.addToken(this.KEYWORDS.get(buffer) as TokenType);
+        this.addToken(TokenType.WORD, buffer);
     }
 
     private tokenizeText(): void {
